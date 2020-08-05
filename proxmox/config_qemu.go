@@ -75,6 +75,8 @@ type ConfigQemu struct {
 	Ipconfig0 string `json:"ipconfig0"`
 	Ipconfig1 string `json:"ipconfig1"`
 	Ipconfig2 string `json:"ipconfig2"`
+	Ipconfig3 string `json:"ipconfig3"`
+	Ipconfig4 string `json:"ipconfig4"`
 }
 
 // CreateVm - Tell Proxmox API to make the VM
@@ -310,6 +312,12 @@ func (config ConfigQemu) UpdateConfig(vmr *VmRef, client *Client) (err error) {
 	if config.Ipconfig2 != "" {
 		configParams["ipconfig2"] = config.Ipconfig2
 	}
+	if config.Ipconfig3 != "" {
+		configParams["ipconfig3"] = config.Ipconfig3
+	}
+	if config.Ipconfig4 != "" {
+		configParams["ipconfig4"] = config.Ipconfig4
+	}
 
 	if len(deleteParams) > 0 {
 		configParams["delete"] = strings.Join(deleteParams, ", ")
@@ -528,6 +536,12 @@ func NewConfigQemuFromApi(vmr *VmRef, client *Client) (config *ConfigQemu, err e
 	}
 	if _, isSet := vmConfig["ipconfig2"]; isSet {
 		config.Ipconfig2 = vmConfig["ipconfig2"].(string)
+	}
+	if _, isSet := vmConfig["ipconfig3"]; isSet {
+		config.Ipconfig3 = vmConfig["ipconfig3"].(string)
+	}
+	if _, isSet := vmConfig["ipconfig4"]; isSet {
+		config.Ipconfig4 = vmConfig["ipconfig4"].(string)
 	}
 
 	// Add disks.
